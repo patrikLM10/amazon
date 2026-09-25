@@ -1,0 +1,12 @@
+# Competition dataset (~2 GB, files up to ~500 MB) — exceeds GitHub limits.
+# Download separately; see README.md for the expected layout.
+dataset/
+
+# Generated per-query outputs (reproducible via the scripts)
+**/results_*.tsv
+**/verify_*.tsv
+
+# Python / OS noise
+__pycache__/
+*.pyc
+.DS_Store
