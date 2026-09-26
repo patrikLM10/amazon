@@ -1,0 +1,6 @@
+# Elasticsearch pipeline requirements (on top of ../requirements.txt)
+elasticsearch==8.18.1
+tqdm
+matplotlib
+# Only needed for example_2_rerank.py / rerank_example.py:
+# sentence-transformers

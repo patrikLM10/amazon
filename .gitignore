@@ -6,6 +6,12 @@ dataset/
 **/results_*.tsv
 **/verify_*.tsv
 
+# Local run-output folders/files (batch search dumps, ticked copies)
+s1_to_s2_search/S1-*/
+s1_to_s2_search/S1-*.txt
+s1_to_s2_search/output_*/
+s1_to_s2_search/result/
+
 # Python / OS noise
 __pycache__/
 *.pyc
