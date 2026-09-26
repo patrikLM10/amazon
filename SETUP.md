@@ -101,6 +101,28 @@ New-Item -ItemType Directory -Force -Path "s1_to_s2_search/output_s2","s1_to_s2_
 }
 ```
 
+### Worked example: 20 ids, both buckets, then tick-verify against ground truth
+
+```powershell
+$baseDir = "s1_to_s2_search/S1-357837082_to_S1-557991692"
+New-Item -ItemType Directory -Force -Path "$baseDir/s2", "$baseDir/s3" | Out-Null
+
+@("S1-357837082", "S1-292603366", "S1-108246457", "S1-727766958", "S1-719571188", "S1-646393119", "S1-723966103", "S1-76693096", "S1-967724835", "S1-288276341", "S1-887125153", "S1-304029686", "S1-166609944", "S1-178800424", "S1-924630389", "S1-81771195", "S1-403692077", "S1-745867296", "S1-671241040", "S1-557991692") | ForEach-Object {
+  python -X utf8 s1_to_s2_search/elasticsearch/elasticsearch_search.py --s1_id $_ --corpus s2 --topk 50 > "$baseDir/s2/$_.txt"
+  python -X utf8 s1_to_s2_search/elasticsearch/elasticsearch_search.py --s1_id $_ --corpus s3 --topk 50 > "$baseDir/s3/$_.txt"
+}
+```
+
+Tick-verify every file against ground truth (each bucket matched to its own
+ground-truth IDs; ✅ is appended to hit lines, files edited in place):
+
+```bash
+python s1_to_s2_search/elasticsearch/tick_folder.py "s1_to_s2_search/S1-357837082_to_S1-557991692/s2" --corpus s2
+python s1_to_s2_search/elasticsearch/tick_folder.py "s1_to_s2_search/S1-357837082_to_S1-557991692/s3" --corpus s3
+# each run ends with a tally, e.g. "Tally: 12/13 HIT (92.3%)"
+# single file instead: tick_matches.py <path> [--corpus s2|s3]
+```
+
 ## 7. Evaluate / tick / study
 
 ```bash
